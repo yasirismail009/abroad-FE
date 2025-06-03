@@ -152,9 +152,9 @@ const ScholarshipsPage: React.FC = () => {
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {scholarships.map((scholarship, index) => (
-                        <div key={scholarship.id} className={`group relative rounded-xl overflow-hidden transition-all duration-300 ${
+                        <div onClick={() => router.push(`/scholarships/${scholarship.id}`)} key={scholarship.id} className={`group relative rounded-xl overflow-hidden transition-all duration-300 ${
                           isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'
-                        } shadow-lg hover:shadow-xl`}>
+                        } shadow-lg hover:shadow-xl cursor-pointer`}>
                           <div className="relative h-48 w-full overflow-hidden">
                             <Image
                               src={studentImages[index % studentImages.length]}
