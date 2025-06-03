@@ -2,7 +2,17 @@ import { GetServerSideProps } from 'next';
 
 const EXTERNAL_DATA_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://globalscholarships.com';
 
-function generateSiteMap(scholarships: any[], news: any[]) {
+interface Scholarship {
+  id: number;
+  updatedAt: string;
+}
+
+interface NewsArticle {
+  slug: string;
+  updatedAt: string;
+}
+
+function generateSiteMap(scholarships: Scholarship[], news: NewsArticle[]) {
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
      <!-- Static Pages -->

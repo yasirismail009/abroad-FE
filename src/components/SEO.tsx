@@ -1,5 +1,11 @@
 import Head from 'next/head';
 
+interface StructuredData {
+  '@context': string;
+  '@type': string;
+  [key: string]: unknown;
+}
+
 interface SEOProps {
   title: string;
   description: string;
@@ -8,7 +14,7 @@ interface SEOProps {
   ogType?: string;
   canonicalUrl?: string;
   twitterCard?: string;
-  structuredData?: any;
+  structuredData?: StructuredData;
 }
 
 export default function SEO({

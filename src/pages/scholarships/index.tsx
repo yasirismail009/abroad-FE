@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { scholarshipService } from '../../services/scholarshipService';
-import ScholarshipCard from '../../components/ScholarshipCard';
 import SearchBar from '../../components/SearchBar';
 import { Scholarship } from '../../types/scholarship';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -17,6 +16,12 @@ const studentImages = [
   'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&auto=format&fit=crop&q=60',
   'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&auto=format&fit=crop&q=60',
 ];
+
+interface SearchFilters {
+  degree_level: string;
+  host_country: string;
+  financial_benefits: string;
+}
 
 const ScholarshipsPage: React.FC = () => {
   const router = useRouter();
@@ -52,11 +57,7 @@ const ScholarshipsPage: React.FC = () => {
     }
   }, [router.query]);
 
-  useEffect(() => {
-    fetchScholarships();
-  }, [currentPage, searchParams]);
-
-  const fetchScholarships = async () => {
+  const fetchScholarships = useCallback(async () => {
     try {
       if (currentPage === 1) {
         setLoading(true);
@@ -76,9 +77,13 @@ const ScholarshipsPage: React.FC = () => {
       setLoading(false);
       setLoadingMore(false);
     }
-  };
+  }, [currentPage, searchParams]);
 
-  const handleSearch = (query: string, filters: any) => {
+  useEffect(() => {
+    fetchScholarships();
+  }, [fetchScholarships]);
+
+  const handleSearch = (query: string, filters: SearchFilters) => {
     setSearchParams({ query, filters });
     setCurrentPage(1);
     
@@ -100,7 +105,7 @@ const ScholarshipsPage: React.FC = () => {
       setCurrentPage(nextPage);
       
       // Update URL with new page number
-      const queryParams = new URLSearchParams(router.query as any);
+      const queryParams = new URLSearchParams(router.query as Record<string, string>);
       queryParams.set('page', nextPage.toString());
       
       router.push({

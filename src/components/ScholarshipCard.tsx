@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Scholarship } from '../types/scholarship';
 import { useTheme } from '../contexts/ThemeContext';
 
-export interface ScholarshipCardProps extends Pick<Scholarship, 'id' | 'title' | 'description' | 'deadline' | 'degree_level' | 'host_country' | 'financial_benefits' | 'benefits' | 'published_date'> {}
+type ScholarshipCardProps = Pick<Scholarship, 'id' | 'title' | 'description' | 'deadline' | 'degree_level' | 'host_country' | 'financial_benefits' | 'benefits' | 'published_date'>;
 
 const ScholarshipCard: React.FC<ScholarshipCardProps> = ({
   id,

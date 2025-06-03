@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { scholarshipService } from '../../services/scholarshipService';
@@ -38,13 +38,9 @@ const ScholarshipDetailPage: React.FC = () => {
     };
   };
 
-  useEffect(() => {
-    if (id) {
-      fetchScholarshipDetails();
-    }
-  }, [id]);
-
-  const fetchScholarshipDetails = async () => {
+  const fetchScholarshipDetails = useCallback(async () => {
+    if (!id) return;
+    
     try {
       setLoading(true);
       const response = await scholarshipService.getScholarshipById(Number(id));
@@ -55,7 +51,13 @@ const ScholarshipDetailPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      fetchScholarshipDetails();
+    }
+  }, [id, fetchScholarshipDetails]);
 
   if (loading) {
     return (

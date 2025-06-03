@@ -12,7 +12,12 @@ export interface Scholarship {
   deadline: string;
   results_date: string | null;
   benefits: string[];
-  duration: Record<string, any>;
+  duration: {
+    years?: number;
+    months?: number;
+    weeks?: number;
+    days?: number;
+  };
   study_programs: string[];
   eligibility: string[];
   required_documents: string[];
