@@ -10,7 +10,7 @@ interface SearchParams {
 }
 
 class ScholarshipService {
-  private baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+  private baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
   async getCountries(): Promise<string[]> {
     const response = await fetch(`${this.baseUrl}/scholarships/countries`);
@@ -58,7 +58,7 @@ class ScholarshipService {
   }
 
   async getScholarshipById(id: number): Promise<Scholarship> {
-    const response = await fetch(`${this.baseUrl}/scholarships/${id}/`);
+    const response = await fetch(`${this.baseUrl}/scholarships/${id}`);
     if (!response.ok) {
       throw new Error('Failed to fetch scholarship details');
     }

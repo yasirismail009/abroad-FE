@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { scholarshipService } from '../../services/scholarshipService';
 import { Scholarship } from '../../types/scholarship';
 import Image from 'next/image';
@@ -13,6 +14,29 @@ const ScholarshipDetailPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { isDarkMode } = useTheme();
+
+  // Generate structured data for SEO
+  const generateStructuredData = () => {
+    if (!scholarship) return null;
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Scholarship',
+      name: scholarship.title,
+      description: scholarship.description,
+      provider: {
+        '@type': 'Organization',
+        name: scholarship.source_website || 'Chulalongkorn University',
+      },
+      applicationDeadline: scholarship.deadline,
+      dateModified: scholarship.updated_at,
+      educationalCredentialAwarded: scholarship.degree_level,
+      awardAmount: scholarship.financial_benefits || 'Fully Funded',
+      eligibilityToApply: scholarship.eligibility.join(', '),
+      applicationProcess: scholarship.application_process?.join(', ') || '',
+      url: scholarship.website_url,
+    };
+  };
 
   useEffect(() => {
     if (id) {
@@ -65,6 +89,34 @@ const ScholarshipDetailPage: React.FC = () => {
 
   return (
     <Layout>
+      <Head>
+        <title>{`${scholarship.title} - Global Scholarships`}</title>
+        <meta name="description" content={scholarship.description.substring(0, 160)} />
+        <meta name="keywords" content={`scholarship, ${scholarship.degree_level}, ${scholarship.host_country}, education funding, international students`} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={scholarship.title} />
+        <meta property="og:description" content={scholarship.description.substring(0, 160)} />
+        <meta property="og:url" content={`https://globalscholarships.com/scholarships/${id}`} />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={scholarship.title} />
+        <meta name="twitter:description" content={scholarship.description.substring(0, 160)} />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href={`https://globalscholarships.com/scholarships/${id}`} />
+        
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateStructuredData()),
+          }}
+        />
+      </Head>
+
       <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
         {/* Hero Section */}
         <div className="relative h-[400px] w-full">
