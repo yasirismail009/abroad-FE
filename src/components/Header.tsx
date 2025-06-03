@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface HeaderProps {
@@ -11,7 +12,8 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold">
-           Abroad Scholarships
+          <Image src="/bg.png" alt="Scholarship" width={60} height={60} />
+
           </Link>
           <div className="flex items-center space-x-6">
             <Link href="/scholarships" className={`hover:text-blue-500 ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>
